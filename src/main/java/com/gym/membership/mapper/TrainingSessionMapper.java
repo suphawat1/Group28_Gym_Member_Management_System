@@ -17,8 +17,8 @@ public class TrainingSessionMapper {
     public TrainingSessionResponseDTO toResponse(TrainingSession session) {
         TrainingSessionResponseDTO sessionResponseDTO = new TrainingSessionResponseDTO();
         sessionResponseDTO.setSessionId(session.getSessionId());
-        sessionResponseDTO.setTrainerId(session.getTrainer().getTrainerId());
-        sessionResponseDTO.setMemberId(session.getMember().getMemberId());
+        sessionResponseDTO.setTrainerId(session.getTrainerId().getTrainerId());
+        sessionResponseDTO.setMemberId(session.getMemberId().getMemberId());
         sessionResponseDTO.setSessionDate(session.getSessionDate());
         sessionResponseDTO.setSessionTime(session.getSessionTime());
         sessionResponseDTO.setStatus(session.getStatus());

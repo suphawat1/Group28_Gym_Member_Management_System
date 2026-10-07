@@ -33,8 +33,8 @@ public class TrainingSessionServiceImpl implements TrainingSessionService {
         Member member = findMember(dto.getMemberId());
 
         TrainingSession session = trainingSessionMapper.toEntity(dto);
-        session.setTrainer(trainer);
-        session.setMember(member);
+        session.setTrainerId(trainer);
+        session.setMemberId(member);
         session.setStatus("BOOKED");
 
         TrainingSession savedSession = trainingSessionRepository.save(session);
@@ -60,8 +60,8 @@ public class TrainingSessionServiceImpl implements TrainingSessionService {
     @Override
     public TrainingSessionResponseDTO updateTrainingSession(Long id, TrainingSessionRequestDTO dto) {
         TrainingSession session = findSession(id);
-        session.setTrainer(findTrainer(dto.getTrainerId()));
-        session.setMember(findMember(dto.getMemberId()));
+        session.setTrainerId(findTrainer(dto.getTrainerId()));
+        session.setMemberId(findMember(dto.getMemberId()));
         session.setSessionDate(dto.getSessionDate());
         session.setSessionTime(dto.getSessionTime());
 
