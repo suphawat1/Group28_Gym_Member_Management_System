@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.gym.membership.domain.entity.Member;
+import com.gym.membership.domain.entity.MemberInfo;
 import com.gym.membership.domain.entity.Trainer;
+import com.gym.membership.domain.repository.MemberInfoRepository;
 import com.gym.membership.domain.repository.MemberRepository;
 import com.gym.membership.domain.repository.TrainerRepository;
 import com.gym.membership.dto.MemberRequestDTO;
@@ -22,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
     private final TrainerRepository trainerRepository;
+    private final MemberInfoRepository memberInfoRepository;
     private final MemberMapper memberMapper;
 
     @Override
@@ -80,6 +83,14 @@ public class MemberServiceImpl implements MemberService {
     public void deleteMember(Long id) {
         Member member = memberRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Member not found"));
+
+        // ลบ Member ที่ยังมี MemberInfo ผูกอยู่ไม่ได้ (FK) ถ้าไม่เช็กจะได้ 500 จึงตอบ 409 แทน
+        for (MemberInfo memberInfo : memberInfoRepository.findAll()) {
+            if (memberInfo.getMember().getMemberId().equals(id)) {
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "Member still has MemberInfo");
+            }
+        }
+
         memberRepository.delete(member);
     }
 }
