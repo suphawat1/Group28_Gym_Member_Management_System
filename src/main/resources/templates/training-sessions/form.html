@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="th">
+<head>
+    <meta charset="UTF-8">
+    <title>Training Session</title>
+</head>
+<body>
+    <h1 th:text="${trainingSessionId == null} ? 'เพิ่ม Training Session' : 'แก้ไข Training Session'"></h1>
+
+    <form th:object="${trainingSession}"
+          th:action="${trainingSessionId == null} ? @{/training-sessions} : @{/training-sessions/{id}(id=${trainingSessionId})}"
+          method="post">
+
+        <p>
+            <label for="sessionDate">วันที่</label><br>
+            <input type="date" id="sessionDate" th:field="*{sessionDate}">
+            <span th:if="${#fields.hasErrors('sessionDate')}" th:errors="*{sessionDate}" style="color:red"></span>
+        </p>
+
+        <p>
+            <label for="sessionTime">เวลา</label><br>
+            <input type="time" id="sessionTime" th:field="*{sessionTime}">
+            <span th:if="${#fields.hasErrors('sessionTime')}" th:errors="*{sessionTime}" style="color:red"></span>
+        </p>
+
+        <p>
+            <label for="trainerId">Trainer ID</label><br>
+            <input type="number" id="trainerId" th:field="*{trainerId}">
+            <span th:if="${#fields.hasErrors('trainerId')}" th:errors="*{trainerId}" style="color:red"></span>
+        </p>
+
+        <p>
+            <label for="memberId">Member ID</label><br>
+            <input type="number" id="memberId" th:field="*{memberId}">
+            <span th:if="${#fields.hasErrors('memberId')}" th:errors="*{memberId}" style="color:red"></span>
+        </p>
+
+        <button type="submit">บันทึก</button>
+        <a th:href="@{/training-sessions}">ยกเลิก</a>
+    </form>
+</body>
+</html>

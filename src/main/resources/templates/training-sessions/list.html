@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="th">
+<head>
+    <meta charset="UTF-8">
+    <title>Training Sessions</title>
+</head>
+<body>
+    <h1>Training Sessions</h1>
+
+    <a th:href="@{/training-sessions/new}">+ เพิ่ม Training Session</a>
+
+    <table border="1" cellpadding="8">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>วันที่</th>
+                <th>เวลา</th>
+                <th>Trainer ID</th>
+                <th>Member ID</th>
+                <th>จัดการ</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="ts : ${trainingSessions}">
+                <td th:text="${ts.sessionId}"></td>
+                <td th:text="${ts.sessionDate}"></td>
+                <td th:text="${ts.sessionTime}"></td>
+                <td th:text="${ts.trainerId}"></td>
+                <td th:text="${ts.memberId}"></td>
+                <td>
+                    <a th:href="@{/training-sessions/{id}/edit(id=${ts.sessionId})}">แก้ไข</a>
+                    <form th:action="@{/training-sessions/{id}/delete(id=${ts.sessionId})}"
+                          method="post" style="display:inline">
+                        <button type="submit">ลบ</button>
+                    </form>
+                </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(trainingSessions)}">
+                <td colspan="6">ยังไม่มีข้อมูล</td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
