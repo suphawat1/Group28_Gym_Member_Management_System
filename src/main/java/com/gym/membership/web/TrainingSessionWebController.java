@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.gym.membership.dto.TrainingSessionRequestDTO;
 import com.gym.membership.dto.TrainingSessionResponseDTO;
@@ -46,24 +47,32 @@ public class TrainingSessionWebController {
             model.addAttribute("trainingSessionId", null);
             return "training-sessions/form";
         }
-        trainingSessionService.createTrainingSession(dto);
+        try {
+            trainingSessionService.createTrainingSession(dto);
+        } catch (ResponseStatusException ex) {
+            if (!addNotFoundError(ex, result)) {
+                throw ex;
+            }
+            model.addAttribute("trainingSessionId", null);
+            return "training-sessions/form";
+        }
         return "redirect:/training-sessions";
     }
 
     // หน้าฟอร์มแก้ไข (มีข้อมูลเดิม): GET /training-sessions/{id}/edit
     @GetMapping("/{id}/edit")
-public String showEditForm(@PathVariable Long id, Model model) {
-    TrainingSessionResponseDTO session = trainingSessionService.getTrainingSessionById(id);
-    TrainingSessionRequestDTO dto = new TrainingSessionRequestDTO();
-    dto.setSessionTime(session.getSessionTime());
-    dto.setSessionDate(session.getSessionDate());
-    dto.setTrainerId(session.getTrainerId());
-    dto.setMemberId(session.getMemberId());
+    public String showEditForm(@PathVariable Long id, Model model) {
+        TrainingSessionResponseDTO session = trainingSessionService.getTrainingSessionById(id);
+        TrainingSessionRequestDTO dto = new TrainingSessionRequestDTO();
+        dto.setSessionTime(session.getSessionTime());
+        dto.setSessionDate(session.getSessionDate());
+        dto.setTrainerId(session.getTrainerId());
+        dto.setMemberId(session.getMemberId());
 
-    model.addAttribute("trainingSession", dto);
-    model.addAttribute("trainingSessionId", id);
-    return "training-sessions/form";
-}
+        model.addAttribute("trainingSession", dto);
+        model.addAttribute("trainingSessionId", id);
+        return "training-sessions/form";
+    }
 
     // กดบันทึกจากฟอร์มแก้ไข: POST /training-sessions/{id}
     @PostMapping("/{id}")
@@ -74,7 +83,15 @@ public String showEditForm(@PathVariable Long id, Model model) {
             model.addAttribute("trainingSessionId", id);
             return "training-sessions/form";
         }
-        trainingSessionService.updateTrainingSession(id, dto);
+        try {
+            trainingSessionService.updateTrainingSession(id, dto);
+        } catch (ResponseStatusException ex) {
+            if (!addNotFoundError(ex, result)) {
+                throw ex; // เช่น "Training session not found" ยังเป็น 404 ตามเดิม
+            }
+            model.addAttribute("trainingSessionId", id);
+            return "training-sessions/form";
+        }
         return "redirect:/training-sessions";
     }
 
@@ -83,5 +100,20 @@ public String showEditForm(@PathVariable Long id, Model model) {
     public String deleteTrainingSession(@PathVariable Long id) {
         trainingSessionService.deleteTrainingSession(id);
         return "redirect:/training-sessions";
+    }
+
+    // แปลง ResponseStatusException เป็น error ของช่องในฟอร์ม
+    // คืน true ถ้าจัดการได้ (member/trainer ไม่พบ), false ถ้าเป็นกรณีอื่น
+    private boolean addNotFoundError(ResponseStatusException ex, BindingResult result) {
+        String reason = ex.getReason();
+        if ("Member not found".equals(reason)) {
+            result.rejectValue("memberId", "notfound", "ไม่พบ Member ID นี้");
+            return true;
+        }
+        if ("Trainer not found".equals(reason)) {
+            result.rejectValue("trainerId", "notfound", "ไม่พบ Trainer ID นี้");
+            return true;
+        }
+        return false;
     }
 }

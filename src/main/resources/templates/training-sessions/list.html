@@ -22,14 +22,14 @@
         </thead>
         <tbody>
             <tr th:each="ts : ${trainingSessions}">
-                <td th:text="${ts.id}"></td>
+                <td th:text="${ts.sessionId}"></td>
                 <td th:text="${ts.sessionDate}"></td>
                 <td th:text="${ts.sessionTime}"></td>
                 <td th:text="${ts.trainerId}"></td>
                 <td th:text="${ts.memberId}"></td>
                 <td>
-                    <a th:href="@{/training-sessions/{id}/edit(id=${ts.id})}">แก้ไข</a>
-                    <form th:action="@{/training-sessions/{id}/delete(id=${ts.id})}"
+                    <a th:href="@{/training-sessions/{id}/edit(id=${ts.sessionId})}">แก้ไข</a>
+                    <form th:action="@{/training-sessions/{id}/delete(id=${ts.sessionId})}"
                           method="post" style="display:inline">
                         <button type="submit">ลบ</button>
                     </form>
