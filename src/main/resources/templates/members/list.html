@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>สมาชิก</title>
+    <style>
+        body { font-family: sans-serif; margin: 32px; }
+        table { border-collapse: collapse; width: 100%; margin-top: 16px; }
+        th, td { border: 1px solid #ccc; padding: 8px 12px; text-align: left; }
+        th { background: #f2f2f2; }
+        .btn { display: inline-block; padding: 6px 12px; border-radius: 4px; text-decoration: none;
+               border: none; cursor: pointer; font-size: 14px; color: white; }
+        .btn-add { background: #2e7d32; }
+        .btn-edit { background: #1565c0; }
+        .btn-delete { background: #c62828; }
+        form.inline { display: inline; }
+        .error-box { background: #fdecea; color: #b71c1c; border: 1px solid #f5c6cb;
+                     padding: 10px 14px; border-radius: 4px; margin: 16px 0; }
+    </style>
+</head>
+<body>
+    <h1>รายชื่อสมาชิก</h1>
+
+    <!-- ข้อความ error จาก controller (ลบ Member ที่ยังมี MemberInfo ไม่ได้) -->
+    <div class="error-box" th:if="${errorMessage}" th:text="${errorMessage}"></div>
+
+    <!-- ปุ่มไปหน้าฟอร์มเพิ่มใหม่ -->
+    <a class="btn btn-add" th:href="@{/members/new}">+ เพิ่มสมาชิก</a>
+
+    <table>
+        <tr>
+            <th>รหัส</th>
+            <th>ชื่อผู้ใช้</th>
+            <th>อีเมล</th>
+            <th>เบอร์โทร</th>
+            <th>รหัสเทรนเนอร์</th>
+            <th>จัดการ</th>
+        </tr>
+        <!-- th:each = วนสร้างแถวนี้ 1 ครั้งต่อสมาชิก 1 คน -->
+        <tr th:each="m : ${members}">
+            <td th:text="${m.memberId}"></td>
+            <td th:text="${m.username}"></td>
+            <td th:text="${m.email}"></td>
+            <td th:text="${m.phone}"></td>
+            <td th:text="${m.trainerId}"></td>
+            <td>
+                <a class="btn btn-edit" th:href="@{/members/{id}/edit(id=${m.memberId})}">แก้ไข</a>
+                <!-- ลบต้องใช้ form แบบ POST -->
+                <form class="inline" th:action="@{/members/{id}/delete(id=${m.memberId})}" method="post"
+                      onsubmit="return confirm('ยืนยันการลบ?');">
+                    <button class="btn btn-delete" type="submit">ลบ</button>
+                </form>
+            </td>
+        </tr>
+        <!-- ถ้ายังไม่มีข้อมูล -->
+        <tr th:if="${#lists.isEmpty(members)}">
+            <td colspan="6">ยังไม่มีข้อมูล</td>
+        </tr>
+    </table>
+</body>
+</html>
