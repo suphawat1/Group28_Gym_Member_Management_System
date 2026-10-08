@@ -4,12 +4,12 @@ import java.math.BigDecimal;
 
 import org.springframework.stereotype.Component;
 
-@Component("STUDENT")
-public class StudentPricing implements PricingStrategy {
+@Component("LOYAL")
+public class LoyalPricing implements PricingStrategy {
 
     @Override
     public BigDecimal calculatePrice(BigDecimal price) {
-        return price.multiply(	new BigDecimal("0.80"));
+        return price.multiply(	new BigDecimal("0.90"));
     }
     
 }
