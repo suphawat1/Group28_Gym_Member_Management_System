@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Group28 Gym</title>
+    <style>
+        :root {
+            --black: #111111;
+            --black-soft: #1c1c1c;
+            --red: #d32f2f;
+            --red-dark: #b71c1c;
+            --gray-100: #f5f5f5;
+            --gray-200: #e0e0e0;
+            --gray-600: #6b6b6b;
+            --white: #ffffff;
+        }
+        * { box-sizing: border-box; }
+        body { margin: 0; font-family: sans-serif; background: var(--gray-100); color: var(--black); }
+
+        /* แถบเมนู */
+        .navbar { background: var(--black); border-bottom: 3px solid var(--red); }
+        .navbar-inner { max-width: 1100px; margin: 0 auto; padding: 0 24px;
+                        display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+        .brand { color: var(--white); font-size: 20px; font-weight: bold; padding: 16px 0; text-decoration: none; }
+        .brand span { color: var(--red); }
+        .menu a { color: var(--gray-200); text-decoration: none; padding: 18px 14px; display: inline-block; font-size: 15px; }
+        .menu a:hover { color: var(--white); background: var(--red); }
+
+        /* ส่วนหัวใหญ่ */
+        .hero { background: linear-gradient(135deg, var(--black) 0%, var(--black-soft) 60%, var(--red-dark) 100%);
+                color: var(--white); padding: 72px 24px; text-align: center; }
+        .hero h1 { margin: 0 0 12px; font-size: 40px; }
+        .hero h1 span { color: var(--red); }
+        .hero p { margin: 0 auto 28px; max-width: 560px; color: var(--gray-200); font-size: 18px; }
+        .hero .btn { background: var(--red); color: var(--white); padding: 12px 28px; border-radius: 4px;
+                     text-decoration: none; font-size: 16px; display: inline-block; }
+        .hero .btn:hover { background: var(--red-dark); }
+
+        /* การ์ดเมนูหลัก */
+        .container { max-width: 1100px; margin: 0 auto; padding: 48px 24px; }
+        .container h2 { margin: 0 0 24px; font-size: 24px; border-left: 5px solid var(--red); padding-left: 12px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; }
+        .card { background: var(--white); border: 1px solid var(--gray-200); border-top: 4px solid var(--black);
+                border-radius: 6px; padding: 24px; text-decoration: none; color: var(--black);
+                transition: transform 0.15s, border-top-color 0.15s, box-shadow 0.15s; }
+        .card:hover { transform: translateY(-4px); border-top-color: var(--red); box-shadow: 0 6px 16px rgba(0,0,0,0.12); }
+        .card h3 { margin: 0 0 8px; font-size: 18px; }
+        .card p { margin: 0 0 16px; color: var(--gray-600); font-size: 14px; line-height: 1.5; }
+        .card .go { color: var(--red); font-weight: bold; font-size: 14px; }
+
+        /* ส่วนท้าย */
+        .footer { background: var(--black); color: var(--gray-200); text-align: center; padding: 20px 24px; font-size: 14px; }
+        .footer span { color: var(--red); }
+    </style>
+</head>
+<body>
+    <!-- แถบเมนู -->
+    <nav class="navbar">
+        <div class="navbar-inner">
+            <a class="brand" th:href="@{/}">GROUP28 <span>GYM</span></a>
+            <div class="menu">
+                <a th:href="@{/members}">สมาชิก</a>
+                <a th:href="@{/member-infos}">ข้อมูลสมาชิก</a>
+                <a th:href="@{/membership-plans}">แพ็กเกจ</a>
+                <a th:href="@{/memberships}">การเป็นสมาชิก</a>
+                <a th:href="@{/trainers}">เทรนเนอร์</a>
+                <a th:href="@{/training-sessions}">การฝึก</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ส่วนหัวใหญ่ -->
+    <header class="hero">
+        <h1>ระบบจัดการสมาชิก <span>ฟิตเนส</span></h1>
+        <p>จัดการสมาชิก แพ็กเกจ เทรนเนอร์ และการฝึก ได้ในที่เดียว</p>
+        <a class="btn" th:href="@{/memberships}">ดูการเป็นสมาชิก</a>
+    </header>
+
+    <!-- การ์ดไปยังแต่ละโมดูล -->
+    <main class="container">
+        <h2>เมนูหลัก</h2>
+        <div class="grid">
+            <a class="card" th:href="@{/members}">
+                <h3>สมาชิก</h3>
+                <p>ดูและจัดการรายชื่อสมาชิกของฟิตเนส</p>
+                <span class="go">เข้าสู่หน้า →</span>
+            </a>
+            <a class="card" th:href="@{/member-infos}">
+                <h3>ข้อมูลสมาชิก</h3>
+                <p>ข้อมูลส่วนตัวและรายละเอียดเพิ่มเติมของสมาชิก</p>
+                <span class="go">เข้าสู่หน้า →</span>
+            </a>
+            <a class="card" th:href="@{/membership-plans}">
+                <h3>แพ็กเกจ</h3>
+                <p>กำหนดราคาและจำนวนวันของแต่ละแพ็กเกจ</p>
+                <span class="go">เข้าสู่หน้า →</span>
+            </a>
+            <a class="card" th:href="@{/memberships}">
+                <h3>การเป็นสมาชิก</h3>
+                <p>บันทึกการสมัครและดูวันหมดอายุของสมาชิก</p>
+                <span class="go">เข้าสู่หน้า →</span>
+            </a>
+            <a class="card" th:href="@{/trainers}">
+                <h3>เทรนเนอร์</h3>
+                <p>รายชื่อเทรนเนอร์และความถนัดของแต่ละคน</p>
+                <span class="go">เข้าสู่หน้า →</span>
+            </a>
+            <a class="card" th:href="@{/training-sessions}">
+                <h3>การฝึก</h3>
+                <p>จองและติดตามรอบการฝึกกับเทรนเนอร์</p>
+                <span class="go">เข้าสู่หน้า →</span>
+            </a>
+        </div>
+    </main>
+
+    <footer class="footer">
+        Group28 <span>Gym</span> Member Management System
+    </footer>
+</body>
+</html>

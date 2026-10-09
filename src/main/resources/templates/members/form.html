@@ -16,6 +16,7 @@
     </style>
 </head>
 <body>
+    <div th:replace="~{fragments/home-button :: home-button}"></div>
     <!-- หัวข้อเปลี่ยนตามโหมด: ไม่มี id = เพิ่มใหม่, มี id = แก้ไข -->
     <h1 th:text="${memberId == null} ? 'เพิ่มสมาชิก' : 'แก้ไขสมาชิก'"></h1>
 
