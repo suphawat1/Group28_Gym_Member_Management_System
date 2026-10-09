@@ -1,0 +1,34 @@
+services:
+  # ฐานข้อมูล PostgreSQL
+  db:
+    image: postgres:17
+    container_name: gym-db
+    environment:
+      POSTGRES_DB: gym_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+    volumes:
+      - gym_pgdata:/var/lib/postgresql/data   # เก็บข้อมูลไว้ แม้ลบ container ข้อมูลไม่หาย
+    healthcheck:                               # ให้แอปรอจนกว่า DB จะพร้อมรับการเชื่อมต่อ
+      test: ["CMD-SHELL", "pg_isready -U postgres -d gym_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # แอป Spring Boot
+  app:
+    build: .
+    container_name: gym-app
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      # ทับค่า localhost ใน application.properties (ภายใน Docker เรียก DB ด้วยชื่อ service ว่า "db")
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/gym_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD:-postgres}
+    ports:
+      - "8080:8080"
+
+volumes:
+  gym_pgdata:
