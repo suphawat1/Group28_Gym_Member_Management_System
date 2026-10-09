@@ -1,57 +1,63 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="th">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>การเป็นสมาชิก</title>
-    <style>
-        body { font-family: sans-serif; margin: 32px; }
-        table { border-collapse: collapse; width: 100%; margin-top: 16px; }
-        th, td { border: 1px solid #ccc; padding: 8px 12px; text-align: left; }
-        th { background: #f2f2f2; }
-        .btn { display: inline-block; padding: 6px 12px; border-radius: 4px; text-decoration: none;
-               border: none; cursor: pointer; font-size: 14px; color: white; }
-        .btn-add { background: #2e7d32; }
-        .btn-edit { background: #1565c0; }
-        .btn-delete { background: #c62828; }
-        form.inline { display: inline; }
-    </style>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
-    <div th:replace="~{fragments/home-button :: home-button}"></div>
-    <h1>รายการการเป็นสมาชิก</h1>
+    <header class="page-header">
+        <div class="page-header-inner">
+            <div th:replace="~{fragments/home-button :: home-button}"></div>
+            <h1>การเป็น<span>สมาชิก</span></h1>
+            <p>บันทึกการสมัครและดูวันหมดอายุของสมาชิก</p>
+        </div>
+    </header>
 
-    <!-- ปุ่มไปหน้าฟอร์มเพิ่มใหม่ -->
-    <a class="btn btn-add" th:href="@{/memberships/new}">+ เพิ่มการเป็นสมาชิก</a>
+    <main class="container">
+        <div class="toolbar">
+            <div>
+                <h2>รายการการเป็นสมาชิก</h2>
+                <span class="count" th:text="'ทั้งหมด ' + ${#lists.size(memberships)} + ' รายการ'"></span>
+            </div>
+            <a class="btn btn-primary" th:href="@{/memberships/new}">+ เพิ่มการเป็นสมาชิก</a>
+        </div>
 
-    <table>
-        <tr>
-            <th>รหัส</th>
-            <th>รหัสสมาชิก</th>
-            <th>รหัสแพ็กเกจ</th>
-            <th>วันเริ่ม</th>
-            <th>วันหมดอายุ</th>
-            <th>จัดการ</th>
-        </tr>
-        <!-- th:each = วนสร้างแถวนี้ 1 ครั้งต่อรายการ 1 รายการ -->
-        <tr th:each="m : ${memberships}">
-            <td th:text="${m.membershipId}"></td>
-            <td th:text="${m.memberId}"></td>
-            <td th:text="${m.planId}"></td>
-            <td th:text="${m.startDate}"></td>
-            <td th:text="${m.endDate}"></td>
-            <td>
-                <a class="btn btn-edit" th:href="@{/memberships/{id}/edit(id=${m.membershipId})}">แก้ไข</a>
-                <!-- ลบต้องใช้ form แบบ POST -->
-                <form class="inline" th:action="@{/memberships/{id}/delete(id=${m.membershipId})}" method="post"
-                      onsubmit="return confirm('ยืนยันการลบ?');">
-                    <button class="btn btn-delete" type="submit">ลบ</button>
-                </form>
-            </td>
-        </tr>
-        <!-- ถ้ายังไม่มีข้อมูล -->
-        <tr th:if="${#lists.isEmpty(memberships)}">
-            <td colspan="6">ยังไม่มีข้อมูล</td>
-        </tr>
-    </table>
+        <div class="table-card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>รหัส</th>
+                        <th>รหัสสมาชิก</th>
+                        <th>รหัสแพ็กเกจ</th>
+                        <th>วันเริ่ม</th>
+                        <th>วันหมดอายุ</th>
+                        <th>จัดการ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="m : ${memberships}">
+                        <td class="id" th:text="${m.membershipId}"></td>
+                        <td><span class="badge" th:text="${m.memberId}"></span></td>
+                        <td><span class="badge" th:text="${m.planId}"></span></td>
+                        <td th:text="${m.startDate}"></td>
+                        <td th:text="${m.endDate}"></td>
+                        <td class="actions">
+                            <a class="btn btn-dark" th:href="@{/memberships/{id}/edit(id=${m.membershipId})}">แก้ไข</a>
+                            <form th:action="@{/memberships/{id}/delete(id=${m.membershipId})}"
+                                  method="post"
+                                  onsubmit="return confirm('ต้องการลบรายการนี้ใช่หรือไม่?');">
+                                <button class="btn btn-danger" type="submit">ลบ</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(memberships)}">
+                        <td class="empty" colspan="6">ยังไม่มีข้อมูล</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
 </body>
 </html>
