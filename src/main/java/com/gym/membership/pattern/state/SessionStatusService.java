@@ -29,4 +29,17 @@ public class SessionStatusService {
         TrainingSession savedSession = trainingSessionRepository.save(session);
         return trainingSessionMapper.toResponse(savedSession);
     }
+
+    public TrainingSessionResponseDTO cancelSession(Long sessionId){
+        TrainingSession session = trainingSessionRepository.findById(sessionId)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Session not found"));
+        SessionState state = states.get(session.getStatus());
+        session.setStatus(state.cancel());
+        TrainingSession savedSession = trainingSessionRepository.save(session);
+        return trainingSessionMapper.toResponse(savedSession);
+    }
+
+    
+
+
 }
