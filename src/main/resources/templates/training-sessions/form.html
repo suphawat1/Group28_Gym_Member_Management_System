@@ -32,6 +32,12 @@
             border-radius: 18px;
             box-shadow: 0 8px 30px rgba(15, 23, 42, 0.08);
             border: 1px solid #e8edf4;
+            transition: box-shadow 0.25s ease, transform 0.25s ease;
+        }
+
+        .form-card:hover {
+            box-shadow: 0 12px 35px rgba(15, 23, 42, 0.12);
+            transform: translateY(-2px);
         }
 
         .header {
@@ -43,13 +49,19 @@
         .header .subtitle {
             color: #64748b;
             font-size: 14px;
-            margin: 0 0 8px;
+            margin: 0 0 12px;
+            letter-spacing: 1px;
         }
 
         h1 {
             font-size: 27px;
-            margin: 0 0 10px;
+            margin: 0 0 12px;
             color: #172554;
+        }
+
+        .header h1 {
+            padding-left: 12px;
+            border-left: 4px solid #2563eb;
         }
 
         .description {
@@ -82,7 +94,7 @@
             border-radius: 9px;
             font-size: 15px;
             color: #1e293b;
-            background: #fff;
+            background: #ffffff;
             outline: none;
             transition: border-color 0.2s, box-shadow 0.2s;
         }
