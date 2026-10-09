@@ -1,43 +1,61 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="th">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Membership Plans</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
-    <div th:replace="~{fragments/home-button :: home-button}"></div>
-    <h1>Membership Plans</h1>
-    <a th:href="@{/membership-plans/new}">+ Add New Plan</a>
+    <header class="page-header">
+        <div class="page-header-inner">
+            <div th:replace="~{fragments/home-button :: home-button}"></div>
+            <h1>Membership <span>Plans</span></h1>
+            <p>กำหนดราคาและจำนวนวันของแต่ละแพ็กเกจ</p>
+        </div>
+    </header>
 
-    <table border="1" cellpadding="6">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Plan Name</th>
-                <th>Price</th>
-                <th>Duration (days)</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="p : ${plans}">
-                <td th:text="${p.planId}"></td>
-                <td th:text="${p.planName}"></td>
-                <td th:text="${p.price}"></td>
-                <td th:text="${p.durationDays}"></td>
-                <td>
-                    <a th:href="@{/membership-plans/{id}/edit(id=${p.planId})}">Edit</a>
-                    <form th:action="@{/membership-plans/{id}/delete(id=${p.planId})}"
-                          method="post" style="display:inline"
-                          onsubmit="return confirm('Delete this plan?');">
-                        <button type="submit">Delete</button>
-                    </form>
-                </td>
-            </tr>
-            <tr th:if="${#lists.isEmpty(plans)}">
-                <td colspan="5">No plans found.</td>
-            </tr>
-        </tbody>
-    </table>
+    <main class="container">
+        <div class="toolbar">
+            <div>
+                <h2>Membership Plans</h2>
+                <span class="count" th:text="'ทั้งหมด ' + ${#lists.size(plans)} + ' รายการ'"></span>
+            </div>
+            <a class="btn btn-primary" th:href="@{/membership-plans/new}">+ Add New Plan</a>
+        </div>
+
+        <div class="table-card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Plan Name</th>
+                        <th>Price</th>
+                        <th>Duration (days)</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="p : ${plans}">
+                        <td class="id" th:text="${p.planId}"></td>
+                        <td th:text="${p.planName}"></td>
+                        <td th:text="${p.price}"></td>
+                        <td><span class="badge" th:text="${p.durationDays}"></span></td>
+                        <td class="actions">
+                            <a class="btn btn-dark" th:href="@{/membership-plans/{id}/edit(id=${p.planId})}">Edit</a>
+                            <form th:action="@{/membership-plans/{id}/delete(id=${p.planId})}"
+                                  method="post"
+                                  onsubmit="return confirm('Delete this plan?');">
+                                <button class="btn btn-danger" type="submit">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(plans)}">
+                        <td class="empty" colspan="5">No plans found.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
 </body>
 </html>
