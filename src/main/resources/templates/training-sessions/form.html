@@ -1,43 +1,289 @@
+```html
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="th">
+
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Training Session</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 40px 20px;
+            font-family: "Segoe UI", Tahoma, sans-serif;
+            background: #f4f7fb;
+            color: #1e293b;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 650px;
+            margin: 35px auto;
+        }
+
+        .form-card {
+            background: #ffffff;
+            padding: 35px;
+            border-radius: 18px;
+            box-shadow: 0 8px 30px rgba(15, 23, 42, 0.08);
+            border: 1px solid #e8edf4;
+        }
+
+        .header {
+            margin-bottom: 30px;
+            padding-bottom: 22px;
+            border-bottom: 1px solid #e8edf4;
+        }
+
+        .header .subtitle {
+            color: #64748b;
+            font-size: 14px;
+            margin: 0 0 8px;
+        }
+
+        h1 {
+            font-size: 27px;
+            margin: 0 0 10px;
+            color: #172554;
+        }
+
+        .description {
+            color: #64748b;
+            font-size: 14px;
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        .form-group {
+            margin-bottom: 22px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #334155;
+            margin-bottom: 9px;
+        }
+
+        .required {
+            color: #ef4444;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px 14px;
+            border: 1px solid #cbd5e1;
+            border-radius: 9px;
+            font-size: 15px;
+            color: #1e293b;
+            background: #fff;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        input:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+        }
+
+        input:hover {
+            border-color: #94a3b8;
+        }
+
+        .error {
+            display: block;
+            color: #dc2626;
+            font-size: 13px;
+            margin-top: 7px;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 32px;
+            padding-top: 22px;
+            border-top: 1px solid #e8edf4;
+        }
+
+        .btn {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            padding: 13px 22px;
+            border-radius: 9px;
+            font-size: 15px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-save {
+            flex: 1;
+            border: none;
+            background: #2563eb;
+            color: #ffffff;
+        }
+
+        .btn-save:hover {
+            background: #1d4ed8;
+            transform: translateY(-1px);
+        }
+
+        .btn-cancel {
+            border: 1px solid #cbd5e1;
+            color: #475569;
+            background: #ffffff;
+        }
+
+        .btn-cancel:hover {
+            background: #f1f5f9;
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 20px 14px;
+            }
+
+            .container {
+                margin: 15px auto;
+            }
+
+            .form-card {
+                padding: 24px 18px;
+            }
+
+            h1 {
+                font-size: 23px;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
+
 <body>
+
     <div th:replace="~{fragments/home-button :: home-button}"></div>
-    <h1 th:text="${trainingSessionId == null} ? 'เพิ่ม Training Session' : 'แก้ไข Training Session'"></h1>
 
-    <form th:object="${trainingSession}"
-          th:action="${trainingSessionId == null} ? @{/training-sessions} : @{/training-sessions/{id}(id=${trainingSessionId})}"
-          method="post">
+    <div class="container">
+        <div class="form-card">
 
-        <p>
-            <label for="sessionDate">วันที่</label><br>
-            <input type="date" id="sessionDate" th:field="*{sessionDate}">
-            <span th:if="${#fields.hasErrors('sessionDate')}" th:errors="*{sessionDate}" style="color:red"></span>
-        </p>
+            <div class="header">
+                <p class="subtitle">TRAINING MANAGEMENT</p>
 
-        <p>
-            <label for="sessionTime">เวลา</label><br>
-            <input type="time" id="sessionTime" th:field="*{sessionTime}">
-            <span th:if="${#fields.hasErrors('sessionTime')}" th:errors="*{sessionTime}" style="color:red"></span>
-        </p>
+                <h1 th:text="${trainingSessionId == null}
+                    ? 'เพิ่ม Training Session'
+                    : 'แก้ไข Training Session'">
+                    เพิ่ม Training Session
+                </h1>
 
-        <p>
-            <label for="trainerId">Trainer ID</label><br>
-            <input type="number" id="trainerId" th:field="*{trainerId}">
-            <span th:if="${#fields.hasErrors('trainerId')}" th:errors="*{trainerId}" style="color:red"></span>
-        </p>
+                <p class="description">
+                    กรอกข้อมูลวันที่ เวลา และผู้เข้าร่วมการฝึกอบรมให้ครบถ้วน
+                </p>
+            </div>
 
-        <p>
-            <label for="memberId">Member ID</label><br>
-            <input type="number" id="memberId" th:field="*{memberId}">
-            <span th:if="${#fields.hasErrors('memberId')}" th:errors="*{memberId}" style="color:red"></span>
-        </p>
+            <form th:object="${trainingSession}"
+                  th:action="${trainingSessionId == null}
+                    ? @{/training-sessions}
+                    : @{/training-sessions/{id}(id=${trainingSessionId})}"
+                  method="post">
 
-        <button type="submit">บันทึก</button>
-        <a th:href="@{/training-sessions}">ยกเลิก</a>
-    </form>
+                <div class="form-group">
+                    <label for="sessionDate">
+                        วันที่ฝึกอบรม <span class="required">*</span>
+                    </label>
+
+                    <input type="date"
+                           id="sessionDate"
+                           th:field="*{sessionDate}"
+                           required>
+
+                    <span class="error"
+                          th:if="${#fields.hasErrors('sessionDate')}"
+                          th:errors="*{sessionDate}">
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    <label for="sessionTime">
+                        เวลาฝึกอบรม <span class="required">*</span>
+                    </label>
+
+                    <input type="time"
+                           id="sessionTime"
+                           th:field="*{sessionTime}"
+                           required>
+
+                    <span class="error"
+                          th:if="${#fields.hasErrors('sessionTime')}"
+                          th:errors="*{sessionTime}">
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    <label for="trainerId">
+                        Trainer ID <span class="required">*</span>
+                    </label>
+
+                    <input type="number"
+                           id="trainerId"
+                           th:field="*{trainerId}"
+                           placeholder="กรอก ID ของ Trainer"
+                           min="1"
+                           required>
+
+                    <span class="error"
+                          th:if="${#fields.hasErrors('trainerId')}"
+                          th:errors="*{trainerId}">
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    <label for="memberId">
+                        Member ID <span class="required">*</span>
+                    </label>
+
+                    <input type="number"
+                           id="memberId"
+                           th:field="*{memberId}"
+                           placeholder="กรอก ID ของ Member"
+                           min="1"
+                           required>
+
+                    <span class="error"
+                          th:if="${#fields.hasErrors('memberId')}"
+                          th:errors="*{memberId}">
+                    </span>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-save">
+                        บันทึกข้อมูล
+                    </button>
+
+                    <a th:href="@{/training-sessions}"
+                       class="btn btn-cancel">
+                        ยกเลิก
+                    </a>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
 </body>
 </html>
+```
