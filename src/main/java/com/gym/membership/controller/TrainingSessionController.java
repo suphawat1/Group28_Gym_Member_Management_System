@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.gym.membership.dto.TrainingSessionRequestDTO;
 import com.gym.membership.dto.TrainingSessionResponseDTO;
+import com.gym.membership.pattern.state.SessionStatusService;
 import com.gym.membership.service.TrainingSessionService;
 
 import jakarta.validation.Valid;
@@ -24,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class TrainingSessionController {
     private final TrainingSessionService sessionService;
+    private final SessionStatusService sessionStatusService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -51,5 +53,14 @@ public class TrainingSessionController {
     public void deleteTrainingSession(@PathVariable Long id){
         sessionService.deleteTrainingSession(id);
     }
+
+    @PostMapping("/{id}/complete")
+    public TrainingSessionResponseDTO completeSession(@PathVariable Long id){
+        return sessionStatusService.completeSession(id);
+    }
     
+    @PostMapping("/{id}/cancel")
+    public TrainingSessionResponseDTO cancelSession(@PathVariable Long id) {
+        return sessionStatusService.cancelSession(id);
+    }
 }
