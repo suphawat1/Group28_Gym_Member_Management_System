@@ -5,6 +5,7 @@
     <title>Training Session</title>
 </head>
 <body>
+    <div th:replace="~{fragments/home-button :: home-button}"></div>
     <h1 th:text="${trainingSessionId == null} ? 'เพิ่ม Training Session' : 'แก้ไข Training Session'"></h1>
 
     <form th:object="${trainingSession}"

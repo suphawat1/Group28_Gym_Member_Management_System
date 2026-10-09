@@ -5,6 +5,7 @@
     <title th:text="${planId == null} ? 'Add Plan' : 'Edit Plan'">Plan Form</title>
 </head>
 <body>
+    <div th:replace="~{fragments/home-button :: home-button}"></div>
     <h1 th:text="${planId == null} ? 'Add Membership Plan' : 'Edit Membership Plan'"></h1>
 
     <form th:object="${plan}"
