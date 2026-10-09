@@ -1,51 +1,59 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="th">
 <head>
     <meta charset="UTF-8">
-    <title th:text="${memberId == null} ? 'เพิ่มสมาชิก' : 'แก้ไขสมาชิก'">สมาชิก</title>
-    <style>
-        body { font-family: sans-serif; margin: 32px; max-width: 480px; }
-        label { display: block; margin-top: 16px; font-weight: bold; }
-        input { width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box; }
-        .error { color: #c62828; font-size: 13px; }
-        .hint { color: #757575; font-size: 13px; margin-top: 4px; }
-        .btn { display: inline-block; padding: 8px 16px; border-radius: 4px; text-decoration: none;
-               border: none; cursor: pointer; font-size: 14px; color: white; margin-top: 24px; }
-        .btn-save { background: #2e7d32; }
-        .btn-back { background: #757575; }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>สมาชิก</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
-    <div th:replace="~{fragments/home-button :: home-button}"></div>
-    <!-- หัวข้อเปลี่ยนตามโหมด: ไม่มี id = เพิ่มใหม่, มี id = แก้ไข -->
-    <h1 th:text="${memberId == null} ? 'เพิ่มสมาชิก' : 'แก้ไขสมาชิก'"></h1>
+    <header class="page-header">
+        <div class="page-header-inner narrow">
+            <div th:replace="~{fragments/home-button :: home-button}"></div>
+            <h1 th:text="${memberId == null} ? 'เพิ่มสมาชิก' : 'แก้ไขสมาชิก'"></h1>
+            <p>กรอกข้อมูลให้ครบถ้วนแล้วกดบันทึก</p>
+        </div>
+    </header>
 
-    <!-- th:action: เพิ่มใหม่ส่งไป POST /members, แก้ไขส่งไป POST /members/{id} -->
-    <!-- th:object: ผูกฟอร์มกับซอง "member" (MemberRequestDTO) -->
-    <form th:action="${memberId == null} ? @{/members} : @{/members/{id}(id=${memberId})}"
-          th:object="${member}" method="post">
+    <main class="container narrow">
+        <form class="form-card" th:object="${member}"
+              th:action="${memberId == null} ? @{/members} : @{/members/{id}(id=${memberId})}"
+              method="post">
 
-        <label>ชื่อผู้ใช้ *</label>
-        <input type="text" th:field="*{username}">
-        <div class="error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
+            <div class="field">
+                <label for="username">ชื่อผู้ใช้ *</label>
+                <input type="text" id="username" th:field="*{username}">
+                <span class="error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
+            </div>
 
-        <label>อีเมล</label>
-        <input type="text" th:field="*{email}">
+            <div class="field">
+                <label for="email">อีเมล</label>
+                <input type="text" id="email" th:field="*{email}">
+            </div>
 
-        <label>รหัสผ่าน *</label>
-        <input type="password" th:field="*{password}">
-        <div class="hint" th:if="${memberId != null}">ต้องกรอกรหัสผ่านใหม่ทุกครั้งที่แก้ไข</div>
-        <div class="error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+            <div class="field">
+                <label for="password">รหัสผ่าน *</label>
+                <input type="password" id="password" th:field="*{password}">
+                <div class="hint" th:if="${memberId != null}">ต้องกรอกรหัสผ่านใหม่ทุกครั้งที่แก้ไข</div>
+                <span class="error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+            </div>
 
-        <label>เบอร์โทร</label>
-        <input type="text" th:field="*{phone}">
+            <div class="field">
+                <label for="phone">เบอร์โทร</label>
+                <input type="text" id="phone" th:field="*{phone}">
+            </div>
 
-        <label>รหัสเทรนเนอร์</label>
-        <input type="number" th:field="*{trainerId}">
-        <div class="error" th:if="${#fields.hasErrors('trainerId')}" th:errors="*{trainerId}"></div>
+            <div class="field">
+                <label for="trainerId">รหัสเทรนเนอร์</label>
+                <input type="number" id="trainerId" th:field="*{trainerId}">
+                <span class="error" th:if="${#fields.hasErrors('trainerId')}" th:errors="*{trainerId}"></span>
+            </div>
 
-        <button class="btn btn-save" type="submit">บันทึก</button>
-        <a class="btn btn-back" th:href="@{/members}">ยกเลิก</a>
-    </form>
+            <div class="form-actions">
+                <button class="btn btn-primary" type="submit">บันทึก</button>
+                <a class="btn btn-cancel" th:href="@{/members}">ยกเลิก</a>
+            </div>
+        </form>
+    </main>
 </body>
 </html>
