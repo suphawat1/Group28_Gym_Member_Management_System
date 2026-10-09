@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+    <div th:fragment="home-button">
+        <style>
+            .home-btn { display: inline-block; background: #111111; color: #ffffff; padding: 8px 16px;
+                        border-radius: 4px; text-decoration: none; font-size: 14px; margin-bottom: 16px;
+                        border-bottom: 3px solid #d32f2f; }
+            .home-btn:hover { background: #d32f2f; }
+        </style>
+        <a class="home-btn" th:href="@{/}">← กลับหน้าหลัก</a>
+    </div>
+</body>
+</html>
