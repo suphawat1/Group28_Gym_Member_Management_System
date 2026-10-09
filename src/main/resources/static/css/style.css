@@ -1,0 +1,74 @@
+:root {
+    --black: #111111;
+    --black-soft: #1c1c1c;
+    --red: #d32f2f;
+    --red-dark: #b71c1c;
+    --gray-100: #f5f5f5;
+    --gray-200: #e0e0e0;
+    --gray-600: #6b6b6b;
+    --white: #ffffff;
+}
+* { box-sizing: border-box; }
+body { margin: 0; font-family: sans-serif; background: var(--gray-100); color: var(--black); }
+
+/* ส่วนหัวหน้า */
+.page-header { background: linear-gradient(135deg, var(--black) 0%, var(--black-soft) 60%, var(--red-dark) 100%);
+               color: var(--white); border-bottom: 3px solid var(--red); }
+.page-header-inner { max-width: 1100px; margin: 0 auto; padding: 32px 24px; }
+.page-header-inner.narrow { max-width: 640px; }
+.page-header h1 { margin: 12px 0 6px; font-size: 32px; }
+.page-header h1 span { color: var(--red); }
+.page-header p { margin: 0; color: var(--gray-200); font-size: 15px; }
+
+/* เนื้อหา */
+.container { max-width: 1100px; margin: 0 auto; padding: 32px 24px 48px; }
+.container.narrow { max-width: 640px; }
+.toolbar { display: flex; align-items: center; justify-content: space-between;
+           flex-wrap: wrap; gap: 12px; margin-bottom: 20px; }
+.toolbar h2 { margin: 0; font-size: 20px; border-left: 5px solid var(--red); padding-left: 12px; }
+.count { color: var(--gray-600); font-size: 14px; }
+
+/* ปุ่ม */
+.btn { display: inline-block; border: none; border-radius: 4px; cursor: pointer;
+       font-size: 14px; padding: 10px 20px; text-decoration: none; font-family: inherit; }
+.btn-primary { background: var(--red); color: var(--white); }
+.btn-primary:hover { background: var(--red-dark); }
+.btn-dark { background: var(--black); color: var(--white); padding: 7px 14px; font-size: 13px; }
+.btn-dark:hover { background: var(--gray-600); }
+.btn-danger { background: var(--white); color: var(--red); border: 1px solid var(--red);
+              padding: 6px 14px; font-size: 13px; }
+.btn-danger:hover { background: var(--red); color: var(--white); }
+.btn-cancel { background: var(--gray-200); color: var(--black); }
+.btn-cancel:hover { background: var(--gray-600); color: var(--white); }
+
+/* ตาราง */
+.table-card { background: var(--white); border: 1px solid var(--gray-200); border-top: 4px solid var(--black);
+              border-radius: 6px; overflow-x: auto; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+table { width: 100%; border-collapse: collapse; font-size: 15px; }
+thead th { background: var(--black); color: var(--white); text-align: left; padding: 14px 16px;
+           font-weight: bold; white-space: nowrap; border-bottom: 3px solid var(--red); }
+tbody td { padding: 14px 16px; border-bottom: 1px solid var(--gray-200); }
+tbody tr:nth-child(even) { background: var(--gray-100); }
+tbody tr:hover { background: #fdeaea; }
+td.id { color: var(--red); font-weight: bold; }
+td.actions { white-space: nowrap; }
+td.actions form { display: inline; margin-left: 6px; }
+td.empty { text-align: center; color: var(--gray-600); padding: 40px 16px; }
+.badge { display: inline-block; background: var(--gray-200); color: var(--black);
+         border-radius: 12px; padding: 2px 10px; font-size: 13px; }
+
+/* ฟอร์ม */
+.form-card { background: var(--white); border: 1px solid var(--gray-200); border-top: 4px solid var(--black);
+             border-radius: 6px; padding: 28px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.field { margin-bottom: 20px; }
+.field label { display: block; margin-bottom: 6px; font-weight: bold; font-size: 14px;
+               border-left: 4px solid var(--red); padding-left: 8px; }
+.field input { width: 100%; padding: 10px 12px; font-size: 15px; font-family: inherit;
+               border: 1px solid var(--gray-200); border-radius: 4px; background: var(--gray-100);
+               color: var(--black); transition: border-color 0.15s, background 0.15s; }
+.field input:focus { outline: none; border-color: var(--red); background: var(--white);
+                     box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.15); }
+.error { display: block; margin-top: 6px; color: var(--red-dark); font-size: 13px; font-weight: bold; }
+.form-actions { display: flex; gap: 12px; align-items: center; margin-top: 8px;
+                padding-top: 20px; border-top: 1px solid var(--gray-200); }
+.form-actions .btn { font-size: 15px; padding: 10px 28px; }
