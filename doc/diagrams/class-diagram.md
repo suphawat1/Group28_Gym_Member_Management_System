@@ -1,3 +1,4 @@
+# Class Diagram
 ```mermaid
 classDiagram
     class Trainer {
