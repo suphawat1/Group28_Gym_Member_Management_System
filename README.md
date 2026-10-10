@@ -147,7 +147,7 @@ Endpoint พิเศษ
 | GET | `/api/pricing?planId={id}&customerType={REGULAR\|STUDENT\|LOYAL}` | คำนวณราคาตามประเภทลูกค้า (Strategy) |
 | POST | `/api/training-sessions/{id}/complete` | เปลี่ยนนัดเป็น COMPLETED (State + Observer) |
 | POST | `/api/training-sessions/{id}/cancel` | เปลี่ยนนัดเป็น CANCELLED (State + Observer) |
-| GET | TODO: endpoint ที่มี Pagination & Sorting | เช่น `?page=0&size=10&sort=name` |
+| GET | `/api/members/page?page=0&size=10&sortBy=username&direction=asc` | ดูสมาชิกแบบแบ่งหน้าและเรียงลำดับ (Pagination & Sorting) |
  
 HTTP Status ที่ใช้: 200, 201, 204, 400, 404, 409, 500
  
