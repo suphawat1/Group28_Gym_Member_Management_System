@@ -1,12 +1,12 @@
-# Domain Model
+# domain model
 ```mermaid
 erDiagram
-    TRAINER |o--o{ MEMBER : "ดูแล"}
+    TRAINER |o--o{ MEMBER : "ดูแล"
     MEMBER ||--o| MEMBER_INFO : "มีข้อมูลเพิ่มเติม"
-    MEMBER ||--o{ MEMBERSHIP : "สมัครสมาชิก"}
-    MEMBERSHIP_PLAN ||--o{ MEMBERSHIP : }"กำหนดแพ็กเกจ"
-    TRAINER ||--o{ TRAINING_SESSION : "สอน"}
-    MEMBER ||--o{ TRAINING_SESSION : "เข้าฝึก"}
+    MEMBER ||--o{ MEMBERSHIP : "สมัครสมาชิก"
+    MEMBERSHIP_PLAN ||--o{ MEMBERSHIP : "กำหนดแพ็กเกจ"
+    TRAINER ||--o{ TRAINING_SESSION : "สอน"
+    MEMBER ||--o{ TRAINING_SESSION : "เข้าฝึก"
 
     TRAINER {
         long trainerId PK
