@@ -1,59 +1,65 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="th">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>ข้อมูลสมาชิก</title>
-    <style>
-        body { font-family: sans-serif; margin: 32px; }
-        table { border-collapse: collapse; width: 100%; margin-top: 16px; }
-        th, td { border: 1px solid #ccc; padding: 8px 12px; text-align: left; }
-        th { background: #f2f2f2; }
-        .btn { display: inline-block; padding: 6px 12px; border-radius: 4px; text-decoration: none;
-               border: none; cursor: pointer; font-size: 14px; color: white; }
-        .btn-add { background: #2e7d32; }
-        .btn-edit { background: #1565c0; }
-        .btn-delete { background: #c62828; }
-        form.inline { display: inline; }
-    </style>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
-    <div th:replace="~{fragments/home-button :: home-button}"></div>
-    <h1>รายการข้อมูลสมาชิก (MemberInfo)</h1>
+    <header class="page-header">
+        <div class="page-header-inner">
+            <div th:replace="~{fragments/home-button :: home-button}"></div>
+            <h1>ข้อมูล<span>สมาชิก</span></h1>
+            <p>ข้อมูลส่วนตัวและผู้ติดต่อฉุกเฉินของสมาชิก (MemberInfo)</p>
+        </div>
+    </header>
 
-    <!-- ปุ่มไปหน้าฟอร์มเพิ่มใหม่ -->
-    <a class="btn btn-add" th:href="@{/member-infos/new}">+ เพิ่มข้อมูลสมาชิก</a>
+    <main class="container">
+        <div class="toolbar">
+            <div>
+                <h2>รายการข้อมูลสมาชิก</h2>
+                <span class="count" th:text="'ทั้งหมด ' + ${#lists.size(memberInfos)} + ' รายการ'"></span>
+            </div>
+            <a class="btn btn-primary" th:href="@{/member-infos/new}">+ เพิ่มข้อมูลสมาชิก</a>
+        </div>
 
-    <table>
-        <tr>
-            <th>รหัส</th>
-            <th>รหัสสมาชิก</th>
-            <th>ชื่อ-นามสกุล</th>
-            <th>เพศ</th>
-            <th>วันเกิด</th>
-            <th>ผู้ติดต่อฉุกเฉิน</th>
-            <th>จัดการ</th>
-        </tr>
-        <!-- th:each = วนสร้างแถวนี้ 1 ครั้งต่อ MemberInfo 1 รายการ -->
-        <tr th:each="i : ${memberInfos}">
-            <td th:text="${i.infoId}"></td>
-            <td th:text="${i.memberId}"></td>
-            <td th:text="${i.fullName}"></td>
-            <td th:text="${i.gender}"></td>
-            <td th:text="${i.dateOfBirth}"></td>
-            <td th:text="${i.emergencyContact}"></td>
-            <td>
-                <a class="btn btn-edit" th:href="@{/member-infos/{id}/edit(id=${i.infoId})}">แก้ไข</a>
-                <!-- ลบต้องใช้ form แบบ POST -->
-                <form class="inline" th:action="@{/member-infos/{id}/delete(id=${i.infoId})}" method="post"
-                      onsubmit="return confirm('ยืนยันการลบ?');">
-                    <button class="btn btn-delete" type="submit">ลบ</button>
-                </form>
-            </td>
-        </tr>
-        <!-- ถ้ายังไม่มีข้อมูล -->
-        <tr th:if="${#lists.isEmpty(memberInfos)}">
-            <td colspan="7">ยังไม่มีข้อมูล</td>
-        </tr>
-    </table>
+        <div class="table-card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>รหัส</th>
+                        <th>รหัสสมาชิก</th>
+                        <th>ชื่อ-นามสกุล</th>
+                        <th>เพศ</th>
+                        <th>วันเกิด</th>
+                        <th>ผู้ติดต่อฉุกเฉิน</th>
+                        <th>จัดการ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="i : ${memberInfos}">
+                        <td class="id" th:text="${i.infoId}"></td>
+                        <td><span class="badge" th:text="${i.memberId}"></span></td>
+                        <td th:text="${i.fullName}"></td>
+                        <td th:text="${i.gender}"></td>
+                        <td th:text="${i.dateOfBirth}"></td>
+                        <td th:text="${i.emergencyContact}"></td>
+                        <td class="actions">
+                            <a class="btn btn-dark" th:href="@{/member-infos/{id}/edit(id=${i.infoId})}">แก้ไข</a>
+                            <form th:action="@{/member-infos/{id}/delete(id=${i.infoId})}"
+                                  method="post"
+                                  onsubmit="return confirm('ต้องการลบรายการนี้ใช่หรือไม่?');">
+                                <button class="btn btn-danger" type="submit">ลบ</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(memberInfos)}">
+                        <td class="empty" colspan="7">ยังไม่มีข้อมูล</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
 </body>
 </html>
