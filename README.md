@@ -159,7 +159,7 @@ cd code
 ```
  
 Unit Test ครอบคลุม Service ทั้ง 6 ตัว (JUnit 5 + Mockito)
-Unit Test อยู่ในโฟลเดอร์ `test/` และ Test Report อยู่ที่ [`doc/test-report.md`](doc/test-report.md) (ผลล่าสุด: Tests run 58, Failures 0, Errors 0)
+Unit Test อยู่ในโฟลเดอร์ `test/` และ Test Report อยู่ที่ [`doc/test-report.md`](doc/test-report.md) (ผลล่าสุด: Tests run 60, Failures 0, Errors 0)
  
 ## Deployment URL
  
