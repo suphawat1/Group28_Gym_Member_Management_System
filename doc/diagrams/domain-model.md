@@ -1,3 +1,4 @@
+# Domain Model
 ```mermaid
 erDiagram
     TRAINER |o--o{ MEMBER : "ดูแล"}
