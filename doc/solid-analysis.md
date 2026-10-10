@@ -28,9 +28,9 @@
 
 | ไฟล์ | บรรทัด | ตัวอย่าง |
 | --- | --- | --- |
-| `pattern/strategy/PricingService.java` | field `Map<String, PricingStrategy> strategies` และ `strategies.get(customerType)` | เลือกวิธีคำนวณราคาจาก Map ไม่มี if-else |
-| `pattern/state/SessionStatusService.java` | field `Map<String, SessionState> states` | เลือกพฤติกรรมตามสถานะจาก Map ไม่มี if-else |
-| `pattern/state/SessionStatusService.java` | field `List<SessionObserver> observers` และ `notifyObservers()` | แจ้งผู้รับทุกตัวผ่าน List |
+| `pattern/strategy/PricingService.java` | บรรทัด 18 (field `strategies`), บรรทัด 24 (`strategies.get(customerType)`) | เลือกวิธีคำนวณราคาจาก Map ไม่มี if-else |
+| `pattern/state/SessionStatusService.java` | บรรทัด 21 (field `states`), บรรทัด 29 และ 39 (`states.get(...)`) | เลือกพฤติกรรมตามสถานะจาก Map ไม่มี if-else |
+| `pattern/state/SessionStatusService.java` | บรรทัด 24 (field `observers`), บรรทัด 46–49 (`notifyObservers()`) | แจ้งผู้รับทุกตัวผ่าน List |
 
 **เหตุผล:** ถ้าต้องการส่วนลดประเภทใหม่ (เช่น `SENIOR`) แค่สร้างคลาสใหม่ที่ implement `PricingStrategy` พร้อม `@Component("SENIOR")` Spring จะใส่เข้า Map ให้อัตโนมัติ โดย**ไม่ต้องแก้** `PricingService` เลย เช่นเดียวกับการเพิ่มช่องทางแจ้งเตือนใหม่ (เช่น `EmailNotifier`) ที่ไม่ต้องแก้ `SessionStatusService`
 
@@ -74,12 +74,12 @@
 | --- | --- | --- |
 | `controller/TrainerController.java` | `private final TrainerService trainerService;` | Controller ขึ้นกับ interface `TrainerService` ไม่ใช่ `TrainerServiceImpl` |
 | `service/MembershipServiceImpl.java` | field `private final ...Repository` | Service ขึ้นกับ Repository interface |
-| `pattern/strategy/PricingService.java` | `Map<String, PricingStrategy>` | ขึ้นกับ interface `PricingStrategy` |
-| `pattern/state/SessionStatusService.java` | `Map<String, SessionState>`, `List<SessionObserver>` | ขึ้นกับ interface |
+| `pattern/strategy/PricingService.java` | บรรทัด 18 (`Map<String, PricingStrategy> strategies`) | ขึ้นกับ interface `PricingStrategy` |
+| `pattern/state/SessionStatusService.java` | บรรทัด 21 (`states`), บรรทัด 24 (`observers`) | ขึ้นกับ interface |
 | ทุก Controller / Service | `@RequiredArgsConstructor` + `private final` | Constructor Injection ทั้งหมด ไม่มี `@Autowired` บน field |
 
 **เหตุผล:** การพึ่ง interface ทำให้เปลี่ยน implementation ได้โดยไม่แก้ผู้เรียก และทำให้ Unit Test ใส่ mock (`@Mock` + `@InjectMocks`) เข้าไปทาง constructor ได้ทันที
 
 ---
 
-> หมายเหตุ: คอลัมน์ "บรรทัด" ระบุเป็นชื่อเมธอด/ฟิลด์ (TODO: เปิดไฟล์จริงแล้วเติมเลขบรรทัด — ใน VS Code กด `Ctrl + G` เพื่อดู/ไปยังบรรทัด)
+> หมายเหตุ: แถวที่ระบุเป็นชื่อเมธอด/ฟิลด์ หมายถึงเมธอด/ฟิลด์นั้นในไฟล์ (ไฟล์สั้น หาได้ทันที) ส่วน "ทั้งคลาส" หมายถึงหน้าที่ของคลาสทั้งไฟล์
