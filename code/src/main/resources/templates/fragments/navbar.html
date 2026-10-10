@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+    <nav th:fragment="navbar" class="gym-nav">
+        <style>
+            .gym-nav { background: #111111; border-bottom: 3px solid #d32f2f; margin-bottom: 20px; }
+            .gym-nav-inner { max-width: 1100px; margin: 0 auto; padding: 0 24px;
+                             display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+            .gym-nav .brand { color: #ffffff; font-size: 20px; font-weight: bold; padding: 16px 0; text-decoration: none; }
+            .gym-nav .brand span { color: #d32f2f; }
+            .gym-nav .menu a { color: #e0e0e0; text-decoration: none; padding: 18px 14px; display: inline-block; font-size: 15px; }
+            .gym-nav .menu a:hover { color: #ffffff; background: #d32f2f; }
+        </style>
+        <div class="gym-nav-inner">
+            <a class="brand" th:href="@{/}">GROUP28 <span>GYM</span></a>
+            <div class="menu">
+                <a th:href="@{/members}">สมาชิก</a>
+                <a th:href="@{/member-infos}">ข้อมูลสมาชิก</a>
+                <a th:href="@{/membership-plans}">แพ็กเกจ</a>
+                <a th:href="@{/memberships}">การเป็นสมาชิก</a>
+                <a th:href="@{/trainers}">เทรนเนอร์</a>
+                <a th:href="@{/training-sessions}">การฝึก</a>
+            </div>
+        </div>
+    </nav>
+</body>
+</html>
