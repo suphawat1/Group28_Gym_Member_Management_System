@@ -6,7 +6,11 @@
 พัฒนาด้วย Spring Boot ตามสถาปัตยกรรมแบบ Layered Architecture, หลัก SOLID และ GoF Design Patterns กลุ่ม Behavioral
  
 รายวิชา CP353002 Principles of Software Design and Development — Group 28
+
+ ## Deployment URL
  
+Link: https://gym-member-management-system.onrender.com/
+
 ## สมาชิกกลุ่ม
  
 | ลำดับ | ชื่อ-นามสกุล | รหัสนักศึกษา | Section | Branch | หน้าที่รับผิดชอบ |
@@ -161,9 +165,6 @@ cd code
 Unit Test ครอบคลุม Service ทั้ง 6 ตัว (JUnit 5 + Mockito)
 Unit Test อยู่ในโฟลเดอร์ `test/` และ Test Report อยู่ที่ [`doc/test-report.md`](doc/test-report.md) (ผลล่าสุด: Tests run 60, Failures 0, Errors 0)
  
-## Deployment URL
- 
-TODO: ใส่ URL ที่ deploy แล้ว
  
 ## Project Structure
  
