@@ -52,7 +52,7 @@
 <body>
     <header class="page-header">
         <div class="page-header-inner">
-            <div th:replace="~{fragments/navbar :: navbar}"></div>
+            <div th:replace="~{fragments/home-button :: home-button}"></div>
             <h1 th:text="${trainingSessionId == null} ? 'เพิ่ม Training Session' : 'แก้ไข Training Session'"></h1>
             <p>กรอกข้อมูลการฝึกให้ครบถ้วนแล้วกดบันทึก</p>
         </div>
