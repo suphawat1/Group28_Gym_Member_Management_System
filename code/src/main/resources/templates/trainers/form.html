@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>เทรนเนอร์</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <header class="page-header">
+        <div class="page-header-inner narrow">
+            <div th:replace="~{fragments/home-button :: home-button}"></div>
+            <h1 th:text="${trainerId == null} ? 'เพิ่มเทรนเนอร์' : 'แก้ไขเทรนเนอร์'"></h1>
+            <p>กรอกข้อมูลให้ครบถ้วนแล้วกดบันทึก</p>
+        </div>
+    </header>
+
+    <main class="container narrow">
+        <form class="form-card" th:object="${trainer}"
+              th:action="${trainerId == null} ? @{/trainers} : @{/trainers/{id}(id=${trainerId})}"
+              method="post">
+
+            <div class="field">
+                <label for="name">ชื่อ</label>
+                <input type="text" id="name" th:field="*{name}">
+                <span class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+            </div>
+
+            <div class="field">
+                <label for="phone">เบอร์โทร</label>
+                <input type="text" id="phone" th:field="*{phone}">
+            </div>
+
+            <div class="field">
+                <label for="specialty">ความถนัด</label>
+                <input type="text" id="specialty" th:field="*{specialty}">
+            </div>
+
+            <div class="form-actions">
+                <button class="btn btn-primary" type="submit">บันทึก</button>
+                <a class="btn btn-cancel" th:href="@{/trainers}">ยกเลิก</a>
+            </div>
+        </form>
+    </main>
+</body>
+</html>

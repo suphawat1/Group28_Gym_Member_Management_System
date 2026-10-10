@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>เทรนเนอร์</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <header class="page-header">
+        <div class="page-header-inner">
+            <div th:replace="~{fragments/home-button :: home-button}"></div>
+            <h1>เทรน<span>เนอร์</span></h1>
+            <p>รายชื่อเทรนเนอร์และความถนัดของแต่ละคน</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="toolbar">
+            <div>
+                <h2>รายชื่อเทรนเนอร์</h2>
+                <span class="count" th:text="'ทั้งหมด ' + ${#lists.size(trainers)} + ' รายการ'"></span>
+            </div>
+            <a class="btn btn-primary" th:href="@{/trainers/new}">+ เพิ่มเทรนเนอร์</a>
+        </div>
+
+        <div class="table-card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>รหัส</th>
+                        <th>ชื่อ</th>
+                        <th>เบอร์โทร</th>
+                        <th>ความถนัด</th>
+                        <th>จัดการ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="t : ${trainers}">
+                        <td class="id" th:text="${t.trainerId}"></td>
+                        <td th:text="${t.name}"></td>
+                        <td th:text="${t.phone}"></td>
+                        <td th:text="${t.specialty}"></td>
+                        <td class="actions">
+                            <a class="btn btn-dark" th:href="@{/trainers/{id}/edit(id=${t.trainerId})}">แก้ไข</a>
+                            <form th:action="@{/trainers/{id}/delete(id=${t.trainerId})}"
+                                  method="post"
+                                  onsubmit="return confirm('ต้องการลบรายการนี้ใช่หรือไม่?');">
+                                <button class="btn btn-danger" type="submit">ลบ</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(trainers)}">
+                        <td class="empty" colspan="5">ยังไม่มีข้อมูล</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+</body>
+</html>
