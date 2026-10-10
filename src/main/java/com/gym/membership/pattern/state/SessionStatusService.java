@@ -21,7 +21,7 @@ public class SessionStatusService {
     private final Map<String, SessionState> states;
     private final TrainingSessionRepository trainingSessionRepository;
     private final TrainingSessionMapper trainingSessionMapper;
-    private final List<SessionObserver> observers;                      // ① ใหม่
+    private final List<SessionObserver> observers;
 
     public TrainingSessionResponseDTO completeSession(Long sessionId){
         TrainingSession session = trainingSessionRepository.findById(sessionId)
@@ -29,7 +29,7 @@ public class SessionStatusService {
         SessionState state = states.get(session.getStatus());
         session.setStatus(state.complete());
         TrainingSession savedSession = trainingSessionRepository.save(session);
-        notifyObservers(savedSession);                                  // ③ ใหม่
+        notifyObservers(savedSession);
         return trainingSessionMapper.toResponse(savedSession);
     }
 
@@ -39,11 +39,11 @@ public class SessionStatusService {
         SessionState state = states.get(session.getStatus());
         session.setStatus(state.cancel());
         TrainingSession savedSession = trainingSessionRepository.save(session);
-        notifyObservers(savedSession);                                  // ③ ใหม่
+        notifyObservers(savedSession);
         return trainingSessionMapper.toResponse(savedSession);
     }
 
-    private void notifyObservers(TrainingSession session) {             // ② ใหม่
+    private void notifyObservers(TrainingSession session) {
         for (SessionObserver observer : observers) {
             observer.onStatusChanged(session);
         }
