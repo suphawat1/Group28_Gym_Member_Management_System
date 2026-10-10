@@ -15,7 +15,7 @@
 | 2 | ศุภวัทน์ แสนเรียน | 673380604-2 | 03 | `suphawat_6733806042_03` | Member, MemberInfo, Docker, Deployment (Render), โครงสร้าง repo, Component / Deployment Diagram |
 | 3 | ฉัตรดนัย ไกรราช | 673380397-1 | 03 | `chatdanay_6733803971_03` | Frontend redesign, Use Case / Activity Diagram |
 | 4 | ภูริ ตั้งพงษ์ | 673380086-8 | 04 | `phuri_6733800868_04` | Unit Test, Pagination & Sorting, Sequence Diagram, สไลด์ |
-| 5 | ชินวัตร แสนเมือง | 673380400-8 | 04 | `chinawat_6733804008_04` | หน้า Home, schema.sql / data.sql, Index / Cascade / Fetch Type, Class Diagram |
+| 5 | ชินวัตร แสนเมือง | 673380400-8 | 04 | `chinnawat_6733804008_04` | หน้า Home, schema.sql / data.sql, Index / Cascade / Fetch Type, Class Diagram |
  
 > หมายเหตุ: ฉัตรดนัยใช้บัญชี GitHub `daveza5584-oss` (และ `chatdanay1`) ทั้งสองบัญชีเป็นของฉัตรดนัย
  
@@ -66,7 +66,7 @@ Domain               domain/entity/  +  dto/ (Request/Response)  +  mapper/  +  
  
 ## Database Design (ER Diagram)
  
-ER Diagram และ Data Dictionary อยู่ที่ `doc/diagrams/` (TODO: ใส่ชื่อไฟล์รูป ER Diagram)
+ER Diagram และ Data Dictionary ฉบับเต็มอยู่ที่ [`doc/er-diagram.md`](doc/er-diagram.md)
  
 มี 6 ตาราง
  
@@ -99,7 +99,7 @@ git clone https://github.com/suphawat1/Group28_Gym_Member_Management_System.git
 cd Group28_Gym_Member_Management_System
 ```
  
-สร้างฐานข้อมูลชื่อ `gym_db` แล้วตั้งค่าใน `src/main/resources/application.properties`
+สร้างฐานข้อมูลชื่อ `gym_db` แล้วตั้งค่าใน `code/src/main/resources/application.properties`
  
 ```properties
 spring.datasource.url=jdbc:postgresql://localhost:5432/gym_db
@@ -112,11 +112,13 @@ spring.jpa.hibernate.ddl-auto=update
  
 **แบบที่ 1: รันในเครื่อง**
 ```bash
+cd code
 ./mvnw spring-boot:run        # Windows: mvnw spring-boot:run
 ```
  
 **แบบที่ 2: Docker Compose (รันแอป + PostgreSQL พร้อมกัน)**
 ```bash
+cd code
 docker compose up --build
 ```
  
@@ -133,7 +135,7 @@ docker compose up --build
 | --- | --- |
 | Trainer | `/api/trainers` |
 | Member | `/api/members` |
-| MemberInfo | `/api/member-infos` (TODO: เช็กใน Swagger) |
+| MemberInfo | `/api/member-infos` |
 | MembershipPlan | `/api/membership-plans` |
 | Membership | `/api/memberships` |
 | TrainingSession | `/api/training-sessions` |
@@ -152,11 +154,12 @@ HTTP Status ที่ใช้: 200, 201, 204, 400, 404, 409, 500
 ## How to Run Tests
  
 ```bash
+cd code
 ./mvnw test                   # Windows: mvnw test
 ```
  
-Unit Test ครอบคลุม Service ทั้ง 6 ตัว (JUnit 5 + Mockito) อยู่ใน `src/test/java/com/gym/membership/service/`
-Test Report อยู่ที่ `test/` (TODO: ใส่ชื่อไฟล์)
+Unit Test ครอบคลุม Service ทั้ง 6 ตัว (JUnit 5 + Mockito)
+Unit Test อยู่ในโฟลเดอร์ `test/` และ Test Report อยู่ที่ [`doc/test-report.md`](doc/test-report.md) (ผลล่าสุด: Tests run 58, Failures 0, Errors 0)
  
 ## Deployment URL
  
@@ -166,7 +169,7 @@ TODO: ใส่ URL ที่ deploy แล้ว
  
 ```
 .
-├── code/                 # Source code + Configuration (Spring Boot project)
+├── code/                 # Source code + Configuration (Spring Boot project, Dockerfile, docker-compose.yml)
 │   └── src/main/java/com/gym/membership/
 │       ├── controller/   # REST Controller
 │       ├── web/          # Thymeleaf Controller
@@ -181,14 +184,13 @@ TODO: ใส่ URL ที่ deploy แล้ว
 │           ├── strategy/ # PricingStrategy (Regular / Student / Loyal)
 │           ├── state/    # SessionState (Booked / Completed / Cancelled)
 │           └── observer/ # SessionObserver (TrainerNotifier / MemberNotifier)
-├── test/                 # Test report และการทดสอบ
+├── test/                 # Unit Test (JUnit 5 + Mockito)
 ├── doc/                  # เอกสารทั้งหมด
-│   ├── diagrams/         # UML / ER Diagram
+│   ├── er-diagram.md     # ER Diagram + Data Dictionary
+│   ├── test-report.md    # Test Report
 │   ├── slide/            # สไลด์นำเสนอ
 │   ├── solid-analysis.md
 │   └── design-patterns.md
-├── img/                  # รูปภาพ / สื่อ
-├── Dockerfile
-├── docker-compose.yml
+├── img/                  # รูป Diagram (Component, Deployment ฯลฯ)
 └── README.md
 ```
