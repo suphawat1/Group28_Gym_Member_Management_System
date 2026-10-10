@@ -21,4 +21,3 @@
 
 ## หมายเหตุ
 - การรัน `./mvnw test` ทั้งโปรเจกต์ มี `MembershipApplicationTests` (context load) เพิ่ม 1 เทสต์ รวมเป็น 58 ผ่านทั้งหมด
-- Log ดิบอยู่ที่ `doc/test-run.log`
