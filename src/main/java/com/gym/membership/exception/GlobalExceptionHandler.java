@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -18,6 +19,13 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleResponseStatus(ResponseStatusException ex,HttpServletRequest request){
         HttpStatus status = HttpStatus.valueOf(ex.getStatusCode().value());
         ErrorResponse body = new ErrorResponse(LocalDateTime.now(), status.value(), status.getReasonPhrase(),ex.getReason(), request.getRequestURI());
+        return ResponseEntity.status(status).body(body);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponse> handleValidation(MethodArgumentNotValidException ex,HttpServletRequest request){
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        ErrorResponse body = new ErrorResponse(LocalDateTime.now(), status.value(), status.getReasonPhrase(),ex.getBindingResult().getFieldErrors().get(0).getDefaultMessage(), request.getRequestURI());
         return ResponseEntity.status(status).body(body);
     }
 }
