@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>การเป็นสมาชิก</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <header class="page-header">
+        <div class="page-header-inner narrow">
+            <div th:replace="~{fragments/home-button :: home-button}"></div>
+            <h1 th:text="${membershipId == null} ? 'เพิ่มการเป็นสมาชิก' : 'แก้ไขการเป็นสมาชิก'"></h1>
+            <p>กรอกข้อมูลให้ครบถ้วนแล้วกดบันทึก (ระบบคำนวณวันหมดอายุให้อัตโนมัติ)</p>
+        </div>
+    </header>
+
+    <main class="container narrow">
+        <form class="form-card" th:object="${membership}"
+              th:action="${membershipId == null} ? @{/memberships} : @{/memberships/{id}(id=${membershipId})}"
+              method="post">
+
+            <div class="field">
+                <label for="memberId">รหัสสมาชิก (memberId)</label>
+                <input type="number" id="memberId" th:field="*{memberId}">
+                <span class="error" th:if="${#fields.hasErrors('memberId')}" th:errors="*{memberId}"></span>
+            </div>
+
+            <div class="field">
+                <label for="planId">รหัสแพ็กเกจ (planId)</label>
+                <input type="number" id="planId" th:field="*{planId}">
+                <span class="error" th:if="${#fields.hasErrors('planId')}" th:errors="*{planId}"></span>
+            </div>
+
+            <div class="field">
+                <label for="startDate">วันเริ่ม</label>
+                <input type="date" id="startDate" th:field="*{startDate}">
+                <span class="error" th:if="${#fields.hasErrors('startDate')}" th:errors="*{startDate}"></span>
+            </div>
+
+            <div class="form-actions">
+                <button class="btn btn-primary" type="submit">บันทึก</button>
+                <a class="btn btn-cancel" th:href="@{/memberships}">ยกเลิก</a>
+            </div>
+        </form>
+    </main>
+</body>
+</html>
