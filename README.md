@@ -160,7 +160,7 @@ Test Report อยู่ที่ `test/` (TODO: ใส่ชื่อไฟล�
  
 ## Deployment URL
  
-TODO: ใส่ URL ที่ deploy แล้ว
+https://gym-member-management-system.onrender.com/
  
 ## Project Structure
  
