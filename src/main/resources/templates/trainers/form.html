@@ -1,42 +1,46 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="th">
 <head>
     <meta charset="UTF-8">
-    <title th:text="${trainerId == null} ? 'เพิ่มเทรนเนอร์' : 'แก้ไขเทรนเนอร์'">เทรนเนอร์</title>
-    <style>
-        body { font-family: sans-serif; margin: 32px; max-width: 480px; }
-        label { display: block; margin-top: 16px; font-weight: bold; }
-        input { width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box; }
-        .error { color: #c62828; font-size: 13px; }
-        .btn { display: inline-block; padding: 8px 16px; border-radius: 4px; text-decoration: none;
-               border: none; cursor: pointer; font-size: 14px; color: white; margin-top: 24px; }
-        .btn-save { background: #2e7d32; }
-        .btn-back { background: #757575; }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>เทรนเนอร์</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
-    <div th:replace="~{fragments/home-button :: home-button}"></div>
-    <!-- หัวข้อเปลี่ยนตามโหมด: ไม่มี id = เพิ่มใหม่, มี id = แก้ไข -->
-    <h1 th:text="${trainerId == null} ? 'เพิ่มเทรนเนอร์' : 'แก้ไขเทรนเนอร์'"></h1>
+    <header class="page-header">
+        <div class="page-header-inner narrow">
+            <div th:replace="~{fragments/home-button :: home-button}"></div>
+            <h1 th:text="${trainerId == null} ? 'เพิ่มเทรนเนอร์' : 'แก้ไขเทรนเนอร์'"></h1>
+            <p>กรอกข้อมูลให้ครบถ้วนแล้วกดบันทึก</p>
+        </div>
+    </header>
 
-    <!-- th:action: เพิ่มใหม่ส่งไป POST /trainers, แก้ไขส่งไป POST /trainers/{id} -->
-    <!-- th:object: ผูกฟอร์มกับซอง "trainer" (TrainerRequestDTO) -->
-    <form th:action="${trainerId == null} ? @{/trainers} : @{/trainers/{id}(id=${trainerId})}"
-          th:object="${trainer}" method="post">
+    <main class="container narrow">
+        <form class="form-card" th:object="${trainer}"
+              th:action="${trainerId == null} ? @{/trainers} : @{/trainers/{id}(id=${trainerId})}"
+              method="post">
 
-        <!-- th:field="*{name}" = ผูกช่องนี้กับ field name ในซอง -->
-        <label>ชื่อ *</label>
-        <input type="text" th:field="*{name}">
-        <div class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+            <div class="field">
+                <label for="name">ชื่อ</label>
+                <input type="text" id="name" th:field="*{name}">
+                <span class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+            </div>
 
-        <label>เบอร์โทร</label>
-        <input type="text" th:field="*{phone}">
+            <div class="field">
+                <label for="phone">เบอร์โทร</label>
+                <input type="text" id="phone" th:field="*{phone}">
+            </div>
 
-        <label>ความถนัด</label>
-        <input type="text" th:field="*{specialty}">
+            <div class="field">
+                <label for="specialty">ความถนัด</label>
+                <input type="text" id="specialty" th:field="*{specialty}">
+            </div>
 
-        <button class="btn btn-save" type="submit">บันทึก</button>
-        <a class="btn btn-back" th:href="@{/trainers}">ยกเลิก</a>
-    </form>
+            <div class="form-actions">
+                <button class="btn btn-primary" type="submit">บันทึก</button>
+                <a class="btn btn-cancel" th:href="@{/trainers}">ยกเลิก</a>
+            </div>
+        </form>
+    </main>
 </body>
 </html>

@@ -1,40 +1,48 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="th">
 <head>
     <meta charset="UTF-8">
-    <title th:text="${planId == null} ? 'Add Plan' : 'Edit Plan'">Plan Form</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Plan Form</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
-    <div th:replace="~{fragments/home-button :: home-button}"></div>
-    <h1 th:text="${planId == null} ? 'Add Membership Plan' : 'Edit Membership Plan'"></h1>
-
-    <form th:object="${plan}"
-          th:action="${planId == null} ? @{/membership-plans} : @{/membership-plans/{id}(id=${planId})}"
-          method="post">
-
-        <div>
-            <label>Plan Name</label>
-            <input type="text" th:field="*{planName}">
-            <span style="color:red" th:if="${#fields.hasErrors('planName')}"
-                  th:errors="*{planName}"></span>
+    <header class="page-header">
+        <div class="page-header-inner narrow">
+            <div th:replace="~{fragments/home-button :: home-button}"></div>
+            <h1 th:text="${planId == null} ? 'Add Membership Plan' : 'Edit Membership Plan'"></h1>
+            <p>กรอกข้อมูลแพ็กเกจให้ครบถ้วนแล้วกดบันทึก</p>
         </div>
+    </header>
 
-        <div>
-            <label>Price</label>
-            <input type="number" step="0.01" th:field="*{price}">
-            <span style="color:red" th:if="${#fields.hasErrors('price')}"
-                  th:errors="*{price}"></span>
-        </div>
+    <main class="container narrow">
+        <form class="form-card" th:object="${plan}"
+              th:action="${planId == null} ? @{/membership-plans} : @{/membership-plans/{id}(id=${planId})}"
+              method="post">
 
-        <div>
-            <label>Duration (days)</label>
-            <input type="number" th:field="*{durationDays}">
-            <span style="color:red" th:if="${#fields.hasErrors('durationDays')}"
-                  th:errors="*{durationDays}"></span>
-        </div>
+            <div class="field">
+                <label for="planName">Plan Name</label>
+                <input type="text" id="planName" th:field="*{planName}">
+                <span class="error" th:if="${#fields.hasErrors('planName')}" th:errors="*{planName}"></span>
+            </div>
 
-        <button type="submit">Save</button>
-        <a th:href="@{/membership-plans}">Cancel</a>
-    </form>
+            <div class="field">
+                <label for="price">Price</label>
+                <input type="number" step="0.01" id="price" th:field="*{price}">
+                <span class="error" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></span>
+            </div>
+
+            <div class="field">
+                <label for="durationDays">Duration (days)</label>
+                <input type="number" id="durationDays" th:field="*{durationDays}">
+                <span class="error" th:if="${#fields.hasErrors('durationDays')}" th:errors="*{durationDays}"></span>
+            </div>
+
+            <div class="form-actions">
+                <button class="btn btn-primary" type="submit">Save</button>
+                <a class="btn btn-cancel" th:href="@{/membership-plans}">Cancel</a>
+            </div>
+        </form>
+    </main>
 </body>
 </html>
