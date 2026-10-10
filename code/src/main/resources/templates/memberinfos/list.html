@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ข้อมูลสมาชิก</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <header class="page-header">
+        <div class="page-header-inner">
+            <div th:replace="~{fragments/home-button :: home-button}"></div>
+            <h1>ข้อมูล<span>สมาชิก</span></h1>
+            <p>ข้อมูลส่วนตัวและผู้ติดต่อฉุกเฉินของสมาชิก (MemberInfo)</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="toolbar">
+            <div>
+                <h2>รายการข้อมูลสมาชิก</h2>
+                <span class="count" th:text="'ทั้งหมด ' + ${#lists.size(memberInfos)} + ' รายการ'"></span>
+            </div>
+            <a class="btn btn-primary" th:href="@{/member-infos/new}">+ เพิ่มข้อมูลสมาชิก</a>
+        </div>
+
+        <div class="table-card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>รหัส</th>
+                        <th>รหัสสมาชิก</th>
+                        <th>ชื่อ-นามสกุล</th>
+                        <th>เพศ</th>
+                        <th>วันเกิด</th>
+                        <th>ผู้ติดต่อฉุกเฉิน</th>
+                        <th>จัดการ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="i : ${memberInfos}">
+                        <td class="id" th:text="${i.infoId}"></td>
+                        <td><span class="badge" th:text="${i.memberId}"></span></td>
+                        <td th:text="${i.fullName}"></td>
+                        <td th:text="${i.gender}"></td>
+                        <td th:text="${i.dateOfBirth}"></td>
+                        <td th:text="${i.emergencyContact}"></td>
+                        <td class="actions">
+                            <a class="btn btn-dark" th:href="@{/member-infos/{id}/edit(id=${i.infoId})}">แก้ไข</a>
+                            <form th:action="@{/member-infos/{id}/delete(id=${i.infoId})}"
+                                  method="post"
+                                  onsubmit="return confirm('ต้องการลบรายการนี้ใช่หรือไม่?');">
+                                <button class="btn btn-danger" type="submit">ลบ</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(memberInfos)}">
+                        <td class="empty" colspan="7">ยังไม่มีข้อมูล</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+</body>
+</html>

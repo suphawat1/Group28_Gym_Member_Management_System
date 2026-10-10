@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>สมาชิก</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <header class="page-header">
+        <div class="page-header-inner">
+            <div th:replace="~{fragments/home-button :: home-button}"></div>
+            <h1>สมาชิก<span>ฟิตเนส</span></h1>
+            <p>ดูและจัดการรายชื่อสมาชิกของฟิตเนส</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- ข้อความ error จาก controller (ลบ Member ที่ยังมี MemberInfo ไม่ได้) -->
+        <div class="error-box" th:if="${errorMessage}" th:text="${errorMessage}"></div>
+
+        <div class="toolbar">
+            <div>
+                <h2>รายชื่อสมาชิก</h2>
+                <span class="count" th:text="'ทั้งหมด ' + ${#lists.size(members)} + ' รายการ'"></span>
+            </div>
+            <a class="btn btn-primary" th:href="@{/members/new}">+ เพิ่มสมาชิก</a>
+        </div>
+
+        <div class="table-card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>รหัส</th>
+                        <th>ชื่อผู้ใช้</th>
+                        <th>อีเมล</th>
+                        <th>เบอร์โทร</th>
+                        <th>รหัสเทรนเนอร์</th>
+                        <th>จัดการ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="m : ${members}">
+                        <td class="id" th:text="${m.memberId}"></td>
+                        <td th:text="${m.username}"></td>
+                        <td th:text="${m.email}"></td>
+                        <td th:text="${m.phone}"></td>
+                        <td><span class="badge" th:if="${m.trainerId != null}" th:text="${m.trainerId}"></span></td>
+                        <td class="actions">
+                            <a class="btn btn-dark" th:href="@{/members/{id}/edit(id=${m.memberId})}">แก้ไข</a>
+                            <form th:action="@{/members/{id}/delete(id=${m.memberId})}"
+                                  method="post"
+                                  onsubmit="return confirm('ต้องการลบรายการนี้ใช่หรือไม่?');">
+                                <button class="btn btn-danger" type="submit">ลบ</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(members)}">
+                        <td class="empty" colspan="6">ยังไม่มีข้อมูล</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+</body>
+</html>
