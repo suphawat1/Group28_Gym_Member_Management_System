@@ -9,7 +9,7 @@
 <body>
     <header class="page-header">
         <div class="page-header-inner narrow">
-            <div th:replace="~{fragments/navbar :: navbar}"></div>
+            <div th:replace="~{fragments/home-button :: home-button}"></div>
             <h1 th:text="${infoId == null} ? 'เพิ่มข้อมูลสมาชิก' : 'แก้ไขข้อมูลสมาชิก'"></h1>
             <p>กรอกข้อมูลให้ครบถ้วนแล้วกดบันทึก</p>
         </div>
