@@ -22,10 +22,14 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.gym.membership.domain.entity.Member;
 import com.gym.membership.domain.entity.MemberInfo;
+import com.gym.membership.domain.entity.Membership;
 import com.gym.membership.domain.entity.Trainer;
+import com.gym.membership.domain.entity.TrainingSession;
 import com.gym.membership.domain.repository.MemberInfoRepository;
 import com.gym.membership.domain.repository.MemberRepository;
+import com.gym.membership.domain.repository.MembershipRepository;
 import com.gym.membership.domain.repository.TrainerRepository;
+import com.gym.membership.domain.repository.TrainingSessionRepository;
 import com.gym.membership.dto.MemberRequestDTO;
 import com.gym.membership.dto.MemberResponseDTO;
 import com.gym.membership.mapper.MemberMapper;
@@ -41,6 +45,12 @@ public class MemberServiceImplTest {
 
     @Mock
     private MemberInfoRepository memberInfoRepository;             // ใช้เช็กก่อนลบ
+
+    @Mock
+    private MembershipRepository membershipRepository;             // ใช้เช็กก่อนลบ
+
+    @Mock
+    private TrainingSessionRepository trainingSessionRepository;   // ใช้เช็กก่อนลบ
 
     @Mock
     private MemberMapper memberMapper;
@@ -318,6 +328,43 @@ public class MemberServiceImplTest {
         ResponseStatusException ex = assertThrows(ResponseStatusException.class,
                 () -> memberService.deleteMember(99L));
         assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
+        verify(memberRepository, never()).delete(any());
+    }
+
+    // ⑮ ลบ Member ที่ยังมีการสมัครแพ็กเกจ → 409 และห้ามลบ
+    @Test
+    void deleteMember_stillHasMembership_throws409() {
+        // Given
+        Member member = sampleMember(1L);
+        Membership membership = new Membership();
+        membership.setMember(member);
+        when(memberRepository.findById(1L)).thenReturn(Optional.of(member));
+        when(memberInfoRepository.findAll()).thenReturn(List.of());
+        when(membershipRepository.findAll()).thenReturn(List.of(membership));
+
+        // When + Then
+        ResponseStatusException ex = assertThrows(ResponseStatusException.class,
+                () -> memberService.deleteMember(1L));
+        assertEquals(HttpStatus.CONFLICT, ex.getStatusCode());
+        verify(memberRepository, never()).delete(any());
+    }
+
+    // ⑯ ลบ Member ที่ยังมีนัดฝึก → 409 และห้ามลบ
+    @Test
+    void deleteMember_stillHasTrainingSession_throws409() {
+        // Given
+        Member member = sampleMember(1L);
+        TrainingSession session = new TrainingSession();
+        session.setMemberId(member);
+        when(memberRepository.findById(1L)).thenReturn(Optional.of(member));
+        when(memberInfoRepository.findAll()).thenReturn(List.of());
+        when(membershipRepository.findAll()).thenReturn(List.of());
+        when(trainingSessionRepository.findAll()).thenReturn(List.of(session));
+
+        // When + Then
+        ResponseStatusException ex = assertThrows(ResponseStatusException.class,
+                () -> memberService.deleteMember(1L));
+        assertEquals(HttpStatus.CONFLICT, ex.getStatusCode());
         verify(memberRepository, never()).delete(any());
     }
 }
