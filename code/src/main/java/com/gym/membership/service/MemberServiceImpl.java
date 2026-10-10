@@ -3,6 +3,8 @@ package com.gym.membership.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -56,6 +58,11 @@ public class MemberServiceImpl implements MemberService {
             result.add(memberMapper.toResponse(member));
         }
         return result;
+    }
+
+    @Override
+    public Page<MemberResponseDTO> getMembersPage(Pageable pageable) {
+        return memberRepository.findAll(pageable).map(memberMapper::toResponse);
     }
 
     @Override
