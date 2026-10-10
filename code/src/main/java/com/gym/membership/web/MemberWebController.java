@@ -105,9 +105,9 @@ public class MemberWebController {
             if (ex.getStatusCode().value() != 409) {
                 throw ex;
             }
-            // 409 = Member นี้ยังมี MemberInfo ผูกอยู่ ส่งข้อความกลับไปแสดงที่หน้ารายการ
+            // 409 = Member นี้ยังมีข้อมูลผูกอยู่ ส่งข้อความกลับไปแสดงที่หน้ารายการ
             redirectAttributes.addFlashAttribute("errorMessage",
-                    "ลบไม่ได้: Member นี้ยังมี MemberInfo อยู่ กรุณาลบ MemberInfo ก่อน");
+                    "ลบไม่ได้: สมาชิกนี้ยังมีข้อมูลผูกอยู่ (ข้อมูลส่วนตัว / การสมัครแพ็กเกจ / นัดฝึก) กรุณาลบข้อมูลเหล่านั้นก่อน");
         }
         return "redirect:/members";
     }

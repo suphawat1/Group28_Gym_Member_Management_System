@@ -11,10 +11,14 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.gym.membership.domain.entity.Member;
 import com.gym.membership.domain.entity.MemberInfo;
+import com.gym.membership.domain.entity.Membership;
 import com.gym.membership.domain.entity.Trainer;
+import com.gym.membership.domain.entity.TrainingSession;
 import com.gym.membership.domain.repository.MemberInfoRepository;
 import com.gym.membership.domain.repository.MemberRepository;
+import com.gym.membership.domain.repository.MembershipRepository;
 import com.gym.membership.domain.repository.TrainerRepository;
+import com.gym.membership.domain.repository.TrainingSessionRepository;
 import com.gym.membership.dto.MemberRequestDTO;
 import com.gym.membership.dto.MemberResponseDTO;
 import com.gym.membership.mapper.MemberMapper;
@@ -27,6 +31,8 @@ public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
     private final TrainerRepository trainerRepository;
     private final MemberInfoRepository memberInfoRepository;
+    private final MembershipRepository membershipRepository;
+    private final TrainingSessionRepository trainingSessionRepository;
     private final MemberMapper memberMapper;
 
     @Override
@@ -91,10 +97,23 @@ public class MemberServiceImpl implements MemberService {
         Member member = memberRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Member not found"));
 
-        // ลบ Member ที่ยังมี MemberInfo ผูกอยู่ไม่ได้ (FK) ถ้าไม่เช็กจะได้ 500 จึงตอบ 409 แทน
+        // ลบ Member ที่ยังมีข้อมูลอื่นผูกอยู่ไม่ได้ (FK) ถ้าไม่เช็กจะได้ 500 จึงตอบ 409 แทน
         for (MemberInfo memberInfo : memberInfoRepository.findAll()) {
             if (memberInfo.getMember().getMemberId().equals(id)) {
                 throw new ResponseStatusException(HttpStatus.CONFLICT, "Member still has MemberInfo");
+            }
+        }
+
+        for (Membership membership : membershipRepository.findAll()) {
+            if (membership.getMember().getMemberId().equals(id)) {
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "Member still has memberships");
+            }
+        }
+
+        // ใน TrainingSession ฟิลด์ชื่อ memberId แต่เก็บเป็น object Member จึงเรียก getMemberId() 2 ชั้น
+        for (TrainingSession session : trainingSessionRepository.findAll()) {
+            if (session.getMemberId().getMemberId().equals(id)) {
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "Member still has training sessions");
             }
         }
 
